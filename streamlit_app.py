@@ -14,6 +14,30 @@ st.set_page_config(page_title="Labelmap test", page_icon="🌍", layout="wide", 
 st.markdown("# Labelmap test")
 st.sidebar.markdown("# Labelmap test")
 
+previousfile = st.sidebar.file_uploader("Choose a file")
+if previousfile is not None:
+    # # To read file as bytes:
+    # bytes_data = previousfile.getvalue()
+    # st.sidebar.write(bytes_data)
+
+    # To convert to a string based IO:
+    stringio = io.StringIO(previousfile.getvalue().decode("utf-8"))
+    #st.sidebar.write(stringio)
+
+    # To read file as string:
+    string_data = stringio.read()
+    di = json.loads(string_data)
+    st.sidebar.json(di['map']['center'])
+
+    lat = di['map']['center']['lat']
+    lng = di['map']['center']['lng']
+    # # Can be used wherever a "file-like" object is accepted:
+    # dataframe = pd.read_csv(uploaded_file)
+    # st.sidebar.write(dataframe)
+else:
+    lat = 37.017654
+    lng = -4.568592
+
 # Dataframe
 df = pd.DataFrame(
    np.random.randn(50, 20),
@@ -22,7 +46,6 @@ df = pd.DataFrame(
 st.dataframe(df)
 
 # Title
-
 title = st.text_input('Title', 'Life of Brian')
 st.write('The current movie title is', title)
 
@@ -47,15 +70,35 @@ txt = st.text_area('Text to analyze', '''It was the best of times, it was the wo
 st.write('Your birthday is:', txt)
 # Map
 
-m = folium.Map(location=[39.949610, -75.150282], zoom_start=5)
-Draw(export=True).add_to(m)
-
 c1, c2 = st.columns(2)
+
+# if st.sidebar.checkbox('Reload map'):
+#     m = folium.Map(location=[lat, lng], zoom_start=5)
+#     Draw(export=True).add_to(m)
+
+#     with c1:
+#         output = st_folium(m, width=700, height=500)
+
+#     with c2:
+#         st.json(output)
+            
+# else:
+#     output = json.dumps({'test':1})
+
+m = folium.Map(location=[lat, lng], zoom_start=5,
+                attr='ESRI',
+                name='satellite',
+                tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}")
+
+Draw(export=True).add_to(m)
+folium.TileLayer('openstreetmap',fill_opacity=0.5).add_to(m)
+folium.LayerControl().add_to(m)
+
 with c1:
     output = st_folium(m, width=700, height=500)
 
-with c2:
-    st.json(output)
+# with c2:
+#     st.json(output)
 
 import base64
 
