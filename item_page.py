@@ -140,7 +140,7 @@ isSaved(url_video, c5)
 up_video = c5.file_uploader("Update video files", accept_multiple_files=True)
 
 if len(up_images) == 0:
-    ioimages = 'None'
+    ioimages = None
 else:
     ioimages = []
     for uploaded_file in up_images:
@@ -148,7 +148,7 @@ else:
         ioimages.append(stringio)
 
 if len(up_audio) == 0:
-    ioaudio = 'None'
+    ioaudio = None
 else:
     ioaudio = []
     for uploaded_file in up_audio:
@@ -156,7 +156,7 @@ else:
         ioaudio.append(stringio)
 
 if len(up_video) == 0:
-    iovideo = 'None'
+    iovideo = None
 else:
     iovideo = []
     for uploaded_file in up_video:
@@ -218,8 +218,8 @@ def get_export_filename():
     if len(title) > 0:
         exportdt = datetime.datetime.now().strftime("%Y%m%d")
         exportti = title.split(' ')
-        if len(exportti) > 2:
-            export_filename = exportdt + '_' + exportti[0] + '_' + exportti[1] + '_' + exportti[2] + '.json'
+        if len(exportti) > 1:
+            export_filename = exportdt + '_' + exportti[0] + '_' + exportti[1] + '.json'
         else:
             export_filename = exportdt + '_' + exportti[0] + '.json'
     else:
