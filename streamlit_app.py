@@ -91,7 +91,8 @@ m = folium.Map(location=[lat, lng], zoom_start=5,
                 tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}")
 
 Draw(export=True).add_to(m)
-folium.TileLayer('openstreetmap',fill_opacity=0.5).add_to(m)
+
+folium.TileLayer('openstreetmap').add_to(m)
 folium.LayerControl().add_to(m)
 
 with c1:
