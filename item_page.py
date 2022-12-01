@@ -295,7 +295,7 @@ def createJSON():
 def get_export_filename():
 
     if len(title) > 0:
-        exportdt = datetime.datetime.now().strftime("%Y%m%d")
+        exportdt = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
         exportti = title.split(' ')
         if len(exportti) > 1:
             export_filename = exportdt + '_' + exportti[0] + '_' + exportti[1] + '.json'

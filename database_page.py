@@ -2,6 +2,9 @@ import streamlit as st
 import pandas as pd
 import io
 import json
+import datetime
+
+from streamlit_editorjs import st_editorjs
 
 @st.cache
 def parsejson(string_data):
@@ -23,7 +26,8 @@ def parsejson(string_data):
             'coordinates': di['coordinates'],
             'license': di['license'],
             'reference': di['reference'],
-            'url_ref': di['url_ref']}
+            'url_ref': di['url_ref'],
+            'time_duration': str(datetime.datetime.strptime(di['log']['export_dt'], "%Y/%m/%d_%H:%M:%S")-datetime.datetime.strptime(di['log']['init_dt'],"%Y/%m/%d_%H:%M:%S" ))}
             # 'image_url': url_image,
             # 'image_files': ioimages,
             # 'audio_url': url_audio,
@@ -55,7 +59,8 @@ df_dicts = {
     'coordinates': [],
     'license': [],
     'reference': [],
-    'url_ref': []}
+    'url_ref': [],
+    'time_duration': []}
 
 df = pd.DataFrame(df_dicts)
 
