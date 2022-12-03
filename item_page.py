@@ -11,9 +11,10 @@ import json
 import io
 import base64
 from PIL import Image
+from geopy.geocoders import Nominatim
 
 st.set_page_config(page_title="Labelmap test", page_icon="🌍", layout="wide", initial_sidebar_state="expanded")
-st.markdown("# Labelmap v.0.3")
+st.markdown("# Labelmap v.0.4")
 st.markdown("""
 ## Changelog
 
@@ -21,7 +22,8 @@ st.markdown("""
 - [x] Update dateformat to "%Y/%m/%d")
 - [ ] Update colors on feedback (green/red)
 - [x] Load map markers from previous file
-- [ ] Use nominatim to get back the coordinates of one address
+- [x] Use nominatim to get back the coordinates of one address
+- [ ] Fix folium marker not added to the json, not possible to be edited. 
 """)
 
 st.sidebar.image('img/TMMlogo.png', width=150)
@@ -153,8 +155,17 @@ with c1:
     coor = st.text_input("Coordinates", value=coor, placeholder="Introduce Coordinates")
     # width = st.text_input("Width", value=800)
     # height = st.text_input("Height", value=600)
-    folium_output = plot_map(lat, lng, coor)
 
+    try:
+        locator = Nominatim(user_agent="myRevGeocoder")
+        location = locator.reverse(coor)
+        address_nominatim = location.address
+        st.write(address_nominatim)
+    except Exception as e:
+        #st.write(e)
+        pass
+
+    folium_output = plot_map(lat, lng, coor)
 try: 
     latm = folium_output['all_drawings'][0]['geometry']['coordinates'][1]
     lngm = folium_output['all_drawings'][0]['geometry']['coordinates'][0]
@@ -190,7 +201,6 @@ robot = c2.checkbox('Artificial Voice', value=robot)
 #     ['Yellow', 'Red'])
 
 categories = c2.text_input('Categories', value=categories, placeholder='Introduce categories separated by semi-colon ;')
-
 isSaved(categories, c2)
 
 pl = c2.text_input("Playlist", value=pl, placeholder="Playlist title")
@@ -202,6 +212,15 @@ add = c2.text_input("Address", value=add, placeholder="Introduce address")
 isSaved(add, c2)
 # coor = c2.text_input("Coordinates", value=coor, placeholder="Introduce Coordinates")
 # isSaved(coor, c2)
+
+try:
+    locator = Nominatim(user_agent="myGeocoder")
+    location = locator.geocode(add)
+    c2.write(f'{location.latitude}, {location.longitude}')
+except Exception as e:
+    #st.write(e)
+    pass
+
 
 license = c2.text_input("License", value=license, placeholder="Introduce License")
 isSaved(license, c2)
@@ -310,7 +329,7 @@ def createJSON():
             'map': folium_output, 
 
             'log': {
-                'version_labelmap': '0.3',
+                'version_labelmap': '0.4',
                 'init_dt': initdt.strftime("%Y/%m/%d_%H:%M:%S"),
                 'export_dt': exportdt,
                 }

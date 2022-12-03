@@ -16,6 +16,7 @@ import numpy as np
 
 import base64
 from PIL import Image
+from geopy.geocoders import Nominatim
 
 @st.cache
 def parsejson(di):
@@ -258,6 +259,16 @@ with c1:
     coor = st.text_input("Coordinates", value=coor, placeholder="Introduce Coordinates")
     # width = st.text_input("Width", value=800)
     # height = st.text_input("Height", value=600)
+
+    try:
+        locator = Nominatim(user_agent="myRevGeocoder")
+        location = locator.reverse(coor)
+        address_nominatim = location.address
+        st.write(address_nominatim)
+    except Exception as e:
+        #st.write(e)
+        pass
+
     folium_output = plot_map(lat, lng, coor)
 
 try: 
@@ -305,8 +316,16 @@ isSaved(plp, c2)
 
 add = c2.text_input("Address", value=add, placeholder="Introduce address")
 isSaved(add, c2)
-coor = c2.text_input("Coordinates", value=coor, placeholder="Introduce Coordinates")
-isSaved(coor, c2)
+# coor = c2.text_input("Coordinates", value=coor, placeholder="Introduce Coordinates")
+# isSaved(coor, c2)
+
+try:
+    locator = Nominatim(user_agent="myGeocoder")
+    location = locator.geocode(add)
+    c2.write(f'{location.latitude}, {location.longitude}')
+except Exception as e:
+    #st.write(e)
+    pass
 
 license = c2.text_input("License", value=license, placeholder="Introduce License")
 isSaved(license, c2)
@@ -414,7 +433,7 @@ def createJSON():
             'map': folium_output, 
 
             'log': {
-                'version_labelmap': '0.3',
+                'version_labelmap': '0.4',
                 'init_dt': initdt.strftime("%Y/%m/%d_%H:%M:%S"),
                 'export_dt': exportdt,
                 }
