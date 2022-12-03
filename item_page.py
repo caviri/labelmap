@@ -20,7 +20,7 @@ st.markdown("""
 
 - [x] Previous file loading
 - [x] Update dateformat to "%Y/%m/%d")
-- [ ] Update colors on feedback (green/red)
+- [x] Update colors on feedback (green/red)
 - [x] Load map markers from previous file
 - [x] Use nominatim to get back the coordinates of one address
 - [ ] Fix folium marker not added to the json, not possible to be edited. 
@@ -109,9 +109,9 @@ else:
 def isSaved(output, ssection):
     if output:
         with ssection:
-            st.write('⬆️ 🤗 Saved!')
+            st.write('⬆️🤗💚💚💚💚💚💚💚💚 Saved! 💚💚💚💚💚💚💚💚🤗⬆️')
     else:
-        ssection.write('⬆️ ⚠️ Not saved!')
+        ssection.write('⬆️⚠️🚨🚨🚨🚨🚨🚨🚨🚨 Not saved! 🚨🚨🚨🚨🚨🚨🚨🚨⚠️⬆️')
 
 
 ######################## Streamlit app ########################

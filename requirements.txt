@@ -4,3 +4,4 @@ numpy
 pandas
 pillow
 geopy
+streamlit_aggrid

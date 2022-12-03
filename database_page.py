@@ -197,10 +197,9 @@ else:
 def isSaved(output, ssection):
     if output:
         with ssection:
-            st.write('⬆️ 🤗 Saved!')
+            st.write('⬆️🤗💚💚💚💚💚💚💚💚 Saved! 💚💚💚💚💚💚💚💚🤗⬆️')
     else:
-        ssection.write('⬆️ ⚠️ Not saved!')
-
+        ssection.write('⬆️⚠️🚨🚨🚨🚨🚨🚨🚨🚨 Not saved! 🚨🚨🚨🚨🚨🚨🚨🚨⚠️⬆️')
 
 ######################## Streamlit app ########################
 st.markdown(f'## Item preview')
