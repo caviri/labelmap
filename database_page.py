@@ -183,11 +183,11 @@ else:
     reference = ''
     url_ref = ''
     url_image = ''
-    #ioimages = None
+    ioimages = None
     url_audio = ''
-    #ioaudio = None
+    ioaudio = None
     url_video = ''
-    #iovideo = None
+    iovideo = None
     folium_output = None
 
     lat = 37.017654
@@ -230,18 +230,43 @@ txt = c1.text_area('Transcription', value=txt, placeholder='Introduce here trans
 isSaved(txt, c1)
 
 ## Map
-m = folium.Map(location=[lat, lng], zoom_start=7,
-                attr='ESRI',
-                name='satellite',
-                tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}")
+def plot_map(lat, lng, coor, width=800, height=600):
+    m = folium.Map(location=[lat, lng], zoom_start=8,
+                    attr='ESRI',
+                    name='satellite',
+                    tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}")
 
-Draw(export=True).add_to(m)
+    Draw(export=True).add_to(m)
 
-folium.TileLayer('openstreetmap').add_to(m)
-folium.LayerControl().add_to(m)
+    folium.TileLayer('openstreetmap').add_to(m)
+    folium.LayerControl().add_to(m)
+
+    try:
+        latm = float(coor.split(',')[0])
+        lngm = float(coor.split(',')[1])
+        folium.Marker(location=[latm, lngm]).add_to(m)
+    except Exception as e:
+        #c1.write(e)
+        pass
+
+    
+    output = st_folium(m, width=width, height=height)
+    return output
 
 with c1:
-    folium_output = st_folium(m, width=700, height=500)
+    #le, mi, ri = st.columns([1,1,1])
+    coor = st.text_input("Coordinates", value=coor, placeholder="Introduce Coordinates")
+    # width = st.text_input("Width", value=800)
+    # height = st.text_input("Height", value=600)
+    folium_output = plot_map(lat, lng, coor)
+
+try: 
+    latm = folium_output['all_drawings'][0]['geometry']['coordinates'][1]
+    lngm = folium_output['all_drawings'][0]['geometry']['coordinates'][0]
+    coor = str(latm) + ',' + str(lngm)
+except Exception as e:
+    #c1.write(e)
+    pass
 
 
 ### c2
@@ -280,7 +305,7 @@ isSaved(plp, c2)
 
 add = c2.text_input("Address", value=add, placeholder="Introduce address")
 isSaved(add, c2)
-coor = c2.text_input("Address", value=coor, placeholder="Introduce Coordinates")
+coor = c2.text_input("Coordinates", value=coor, placeholder="Introduce Coordinates")
 isSaved(coor, c2)
 
 license = c2.text_input("License", value=license, placeholder="Introduce License")
@@ -389,7 +414,7 @@ def createJSON():
             'map': folium_output, 
 
             'log': {
-                'version_labelmap': '0.2',
+                'version_labelmap': '0.3',
                 'init_dt': initdt.strftime("%Y/%m/%d_%H:%M:%S"),
                 'export_dt': exportdt,
                 }
