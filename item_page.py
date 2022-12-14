@@ -13,6 +13,8 @@ import base64
 from PIL import Image
 from geopy.geocoders import Nominatim
 
+from unidecode import unidecode
+
 st.set_page_config(page_title="Labelmap test", page_icon="🌍", layout="wide", initial_sidebar_state="expanded")
 st.markdown("# Labelmap v.0.4")
 st.markdown("""
@@ -351,7 +353,7 @@ def get_export_filename():
     else:
         export_filename = 'export.json'
 
-    return export_filename
+    return unidecode(export_filename)
 
 
 

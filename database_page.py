@@ -18,6 +18,8 @@ import base64
 from PIL import Image
 from geopy.geocoders import Nominatim
 
+from unidecode import unidecode
+
 @st.cache
 def parsejson(di):
 
@@ -454,7 +456,7 @@ def get_export_filename():
     else:
         export_filename = 'export.json'
 
-    return export_filename
+    return unidecode(export_filename)
 
 
 
