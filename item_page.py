@@ -75,8 +75,11 @@ if previousfile is not None:
     iovideo = di['video_files']
     folium_output = di['map']
 
-    lat = di['map']['center']['lat']
-    lng = di['map']['center']['lng']
+    # lat = 37#di['map']['center']['lat']
+    # lng = -4#di['map']['center']['lng']
+
+    lat = 37.017654
+    lng = -4.568592
 
 else:
     title = ''

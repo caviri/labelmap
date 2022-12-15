@@ -164,8 +164,10 @@ if len(sel_row) > 0:
     iovideo = di['video_files']
     folium_output = di['map']
 
-    lat = di['map']['center']['lat']
-    lng = di['map']['center']['lng']
+    # lat = di['map']['center']['lat']
+    # lng = di['map']['center']['lng']
+    lat = 37.017654
+    lng = -4.568592
 
 else:
     title = ''
